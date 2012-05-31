@@ -1,5 +1,5 @@
 <?php
-	class Checker	//класс, который проверяет введённые пользователем коды и добавляет их пользователю
+	class Checker	//РєР»Р°СЃСЃ, РєРѕС‚РѕСЂС‹Р№ РїСЂРѕРІРµСЂСЏРµС‚ РІРІРµРґС‘РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РєРѕРґС‹ Рё РґРѕР±Р°РІР»СЏРµС‚ РёС… РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ
 	{
 		function __construct($vkId_, $codeArr_)
 		{
@@ -8,7 +8,7 @@
 			$this->parsedCodes = array();
 			$this->badCodes = array();
 		}
-		function parseCodes()	//разбирает строку с кодами на массив, сразу удаляя кривые коды
+		function parseCodes()	//СЂР°Р·Р±РёСЂР°РµС‚ СЃС‚СЂРѕРєСѓ СЃ РєРѕРґР°РјРё РЅР° РјР°СЃСЃРёРІ, СЃСЂР°Р·Сѓ СѓРґР°Р»СЏСЏ РєСЂРёРІС‹Рµ РєРѕРґС‹
 		{
 			$this->parsedCodes = array();
 			$temp = "";
@@ -36,14 +36,14 @@
 			}
 			if(strlen($temp) > 0)
 			{
-				if(strlen($temp) != 8)					//откидываем коды неправильной длины
+				if(strlen($temp) != 8)					//РѕС‚РєРёРґС‹РІР°РµРј РєРѕРґС‹ РЅРµРїСЂР°РІРёР»СЊРЅРѕР№ РґР»РёРЅС‹
 					$this->badCodes[] = $temp;				
 				else
 					$this->parsedCodes[] = $temp;
 				unset($temp);
 			}
 		}
-		function checkCodes()			//сверяет коды по базе
+		function checkCodes()			//СЃРІРµСЂСЏРµС‚ РєРѕРґС‹ РїРѕ Р±Р°Р·Рµ
 		{
 			if(count($this->parsedCodes) != 0)
 			{
@@ -51,7 +51,7 @@
 				{
 					$query = sprintf("SELECT * FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($c));
 					$res = mysql_query($query);
-					if(mysql_num_rows($res) <= 0)	//если кода нет - записываем его в массив плохих кодов
+					if(mysql_num_rows($res) <= 0)	//РµСЃР»Рё РєРѕРґР° РЅРµС‚ - Р·Р°РїРёСЃС‹РІР°РµРј РµРіРѕ РІ РјР°СЃСЃРёРІ РїР»РѕС…РёС… РєРѕРґРѕРІ
 					{
 						$this->badCodes[] = $c;
 						unset($this->parsedCodes[$k]);
@@ -60,7 +60,7 @@
 			}
 			$this->checked = true;
 		}
-		function addCodes()			//добавляет коды юзеру
+		function addCodes()			//РґРѕР±Р°РІР»СЏРµС‚ РєРѕРґС‹ СЋР·РµСЂСѓ
 		{
 			if($this->checked)
 			{
@@ -69,24 +69,24 @@
 				foreach($this->parsedCodes as $c)
 				{
 					$query = sprintf("DELETE FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($c));
-					$res = mysql_query($query);			//удаляем код из базы кодов, т.к. теперь он активированный
+					$res = mysql_query($query);			//СѓРґР°Р»СЏРµРј РєРѕРґ РёР· Р±Р°Р·С‹ РєРѕРґРѕРІ, С‚.Рє. С‚РµРїРµСЂСЊ РѕРЅ Р°РєС‚РёРІРёСЂРѕРІР°РЅРЅС‹Р№
 					if($res)
 					{
-						$temp .= $c . ' ';		//записываем эти коды снова в строку, которую потом допишем к кодам юзера в БД
+						$temp .= $c . ' ';		//Р·Р°РїРёСЃС‹РІР°РµРј СЌС‚Рё РєРѕРґС‹ СЃРЅРѕРІР° РІ СЃС‚СЂРѕРєСѓ, РєРѕС‚РѕСЂСѓСЋ РїРѕС‚РѕРј РґРѕРїРёС€РµРј Рє РєРѕРґР°Рј СЋР·РµСЂР° РІ Р‘Р”
 						$t++;
 					}
 					else
 						$this->badCodes[] = $c;
 				}
 				$query = sprintf("UPDATE razin_promo.pr_users SET codes = CONCAT(codes, '%s'), codes_num = codes_num + '%d' WHERE vk_id = '%s'", mysql_real_escape_string($temp), $t, mysql_real_escape_string($this->vkId));
-				$res = mysql_query($query);		//увеличиваем количество кодов текущего пользователя, и дописываем ему введённые им коды
+				$res = mysql_query($query);		//СѓРІРµР»РёС‡РёРІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РєРѕРґРѕРІ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, Рё РґРѕРїРёСЃС‹РІР°РµРј РµРјСѓ РІРІРµРґС‘РЅРЅС‹Рµ РёРј РєРѕРґС‹
 			}
 		}		
 		protected $checked = false;
-		public $codeArr;			//строка с кодами, (через пробел или запятую или \n и т.д.)
-		public $badCodes;			//коды не прошедшие проверку
-		protected $parsedCodes;		//массив хороших, годных кодов
-		protected $vkId;			//ид юзера в вк
+		public $codeArr;			//СЃС‚СЂРѕРєР° СЃ РєРѕРґР°РјРё, (С‡РµСЂРµР· РїСЂРѕР±РµР» РёР»Рё Р·Р°РїСЏС‚СѓСЋ РёР»Рё \n Рё С‚.Рґ.)
+		public $badCodes;			//РєРѕРґС‹ РЅРµ РїСЂРѕС€РµРґС€РёРµ РїСЂРѕРІРµСЂРєСѓ
+		protected $parsedCodes;		//РјР°СЃСЃРёРІ С…РѕСЂРѕС€РёС…, РіРѕРґРЅС‹С… РєРѕРґРѕРІ
+		protected $vkId;			//РёРґ СЋР·РµСЂР° РІ РІРє
 	
 
 

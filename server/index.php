@@ -1,4 +1,4 @@
-<?php	//////////файлик для отладки и тестирования
+<?php	//////////С„Р°Р№Р»РёРє РґР»СЏ РѕС‚Р»Р°РґРєРё Рё С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ
 	session_start();
 	require_once 'db_conf.php';	
 	require_once 'register.php';
@@ -15,7 +15,7 @@
 <?php 
 	if(!isset($_SESSION['vkId']))
 	{
-		if(!isset($_POST['vkId']))		//при первом входе предлагаем зарегистрироваться в базе
+		if(!isset($_POST['vkId']))		//РїСЂРё РїРµСЂРІРѕРј РІС…РѕРґРµ РїСЂРµРґР»Р°РіР°РµРј Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РІ Р±Р°Р·Рµ
 		{
 			include 'reg_form.php';
 		}
@@ -27,20 +27,20 @@
 			{
 				$_SESSION['vkId'] = $_POST['vkId'];
 				unset($_POST['vkId']);
-				echo "Вы активировали ".$reg_user->codeCount." кодов";
+				echo "Р’С‹ Р°РєС‚РёРІРёСЂРѕРІР°Р»Рё ".$reg_user->codeCount." РєРѕРґРѕРІ";
 				include 'code_add_form.php';
 			}
 			elseif($rg == reg::ALREADY_EXIST)
 			{				
 				$_SESSION['vkId'] = $_POST['vkId'];
 				unset($_POST['vkId']);
-				echo "Вы активировали ".$reg_user->codeCount." кодов";
+				echo "Р’С‹ Р°РєС‚РёРІРёСЂРѕРІР°Р»Рё ".$reg_user->codeCount." РєРѕРґРѕРІ";
 				include 'code_add_form.php';
 			}
 			elseif($rg == reg::ADDING_FAILED)
 			{
 				unset($_POST['vkId']);
-				echo "Во время регистрации произошла ошибка";
+				echo "Р’Рѕ РІСЂРµРјСЏ СЂРµРіРёСЃС‚СЂР°С†РёРё РїСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°";
 				include 'reg_form.php';		
 			}
 		}
@@ -50,26 +50,26 @@
 		$reg_user = new reg($_SESSION['vkId']);
 		$rg = $reg_user->register();
 		echo $_SESSION['vkId']."<br>";
-		if(!isset($_POST['codes']))		//если пользователь зареган, предлагаем вводить коды
+		if(!isset($_POST['codes']))		//РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р·Р°СЂРµРіР°РЅ, РїСЂРµРґР»Р°РіР°РµРј РІРІРѕРґРёС‚СЊ РєРѕРґС‹
 		{
-			echo "Вы активировали ".$reg_user->codeCount." кодов";
+			echo "Р’С‹ Р°РєС‚РёРІРёСЂРѕРІР°Р»Рё ".$reg_user->codeCount." РєРѕРґРѕРІ";
 			include 'code_add_form.php';
 		}
 		else
 		{
-			$ch = new Checker($_SESSION['vkId'], $_POST['codes']);		//добавляем коды
+			$ch = new Checker($_SESSION['vkId'], $_POST['codes']);		//РґРѕР±Р°РІР»СЏРµРј РєРѕРґС‹
 			$ch->parseCodes();
 			$ch->checkCodes();
 			$ch->addCodes();
 			if(count($ch->badCodes) > 0)
 			{
-				echo 'Не удалось зарегать следующие номера: <br>';
+				echo 'РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°СЂРµРіР°С‚СЊ СЃР»РµРґСѓСЋС‰РёРµ РЅРѕРјРµСЂР°: <br>';
 				foreach($ch->badCodes as $c)
 				{					
 					echo $c.'<br>';
 				}
 			}
-			echo "Вы активировали ".$reg_user->codeCount." кодов";
+			echo "Р’С‹ Р°РєС‚РёРІРёСЂРѕРІР°Р»Рё ".$reg_user->codeCount." РєРѕРґРѕРІ";
 			include 'code_add_form.php';
 		}
 	}

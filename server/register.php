@@ -1,5 +1,5 @@
 <?php
-	class reg	//класс, добавляющий пользователя в БД
+	class reg	//РєР»Р°СЃСЃ, РґРѕР±Р°РІР»СЏСЋС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Р‘Р”
 	{
 		const ALREADY_EXIST = -1;
 		const ADDING_FAILED = -2;
@@ -11,7 +11,7 @@
 		function register()
 		{
 			$query = sprintf("SELECT * FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
-			$res = mysql_query($query);		//проверяем нет ли этого пользователя
+			$res = mysql_query($query);		//РїСЂРѕРІРµСЂСЏРµРј РЅРµС‚ Р»Рё СЌС‚РѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 			if(mysql_num_rows($res) > 0)	
 			{
 				$query = sprintf("SELECT codes_num FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
@@ -25,7 +25,7 @@
 			}
 			
 			$query = sprintf("INSERT INTO razin_promo.pr_users (vk_id, codes, codes_num) VALUES ('%s', '', 0)", mysql_real_escape_string($this->vkId));
-			$res = mysql_query($query);		//добавляем.
+			$res = mysql_query($query);		//РґРѕР±Р°РІР»СЏРµРј.
 			if(!$res)
 				return self::ADDING_FAILED;
 			else
