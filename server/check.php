@@ -10,12 +10,11 @@
 		}
 		function parseCodes()	//разбирает строку с кодами на массив, сразу удаляя кривые коды
 		{
-			$sep = array(',', '.', ' ', '\n', ';');			//возможные разделители кодов (можно дополнить)
-			$this->parsedCodes = array();			
-			$temp = "";			
+			$this->parsedCodes = array();
+			$temp = "";
 			for($i = 0; $i < strlen($this->codeArr); $i++)
 			{
-				if(!in_array($this->codeArr[$i], $sep))
+				if(($this->codeArr[$i] >= '0' && $this->codeArr[$i] <= '9' ) || (strtolower($this->codeArr[$i]) >= 'a' && strtolower($this->codeArr[$i]) <= 'z'))
 				{
 					$temp .= $this->codeArr[$i];
 				}
@@ -29,6 +28,10 @@
 							$this->parsedCodes[] = $temp;
 						$temp = "";
 					}
+					else
+					{
+						$temp = "";
+					}
 				}					
 			}
 			if(strlen($temp) > 0)
@@ -38,7 +41,7 @@
 				else
 					$this->parsedCodes[] = $temp;
 				unset($temp);
-			}	
+			}
 		}
 		function checkCodes()			//сверяет коды по базе
 		{
@@ -63,17 +66,17 @@
 			{
 				$temp = "";
 				$t = 0;
-				for($i = 0; $i < count($this->parsedCodes); $i++)
+				foreach($this->parsedCodes as $c)
 				{
-					$query = sprintf("DELETE FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($this->parsedCodes[$i]));
+					$query = sprintf("DELETE FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($c));
 					$res = mysql_query($query);			//удаляем код из базы кодов, т.к. теперь он активированный
 					if($res)
 					{
-						$temp .= $this->parsedCodes[$i] . ' ';		//записываем эти коды снова в строку, которую потом допишем к кодам юзера в БД
+						$temp .= $c . ' ';		//записываем эти коды снова в строку, которую потом допишем к кодам юзера в БД
 						$t++;
 					}
 					else
-						$this->badCodes[] = $this->parsedCodes[$i];
+						$this->badCodes[] = $c;
 				}
 				$query = sprintf("UPDATE razin_promo.pr_users SET codes = CONCAT(codes, '%s'), codes_num = codes_num + '%d' WHERE vk_id = '%s'", mysql_real_escape_string($temp), $t, mysql_real_escape_string($this->vkId));
 				$res = mysql_query($query);		//увеличиваем количество кодов текущего пользователя, и дописываем ему введённые им коды

@@ -21,19 +21,21 @@
 		}
 		else
 		{
-			$reg_user = new reg($_POST['vkId']);	
-			$rg = $reg_user->register();
+			$reg_user = new reg($_POST['vkId']);
+			$rg = $reg_user->register();			
 			if($rg == 1)
 			{
 				$_SESSION['vkId'] = $_POST['vkId'];
 				unset($_POST['vkId']);
+				echo "Вы активировали ".$reg_user->codeCount." кодов";
 				include 'code_add_form.php';
 			}
 			elseif($rg == reg::ALREADY_EXIST)
-			{
+			{				
+				$_SESSION['vkId'] = $_POST['vkId'];
 				unset($_POST['vkId']);
-				echo "Это имя занято";
-				include 'reg_form.php';				
+				echo "Вы активировали ".$reg_user->codeCount." кодов";
+				include 'code_add_form.php';
 			}
 			elseif($rg == reg::ADDING_FAILED)
 			{
@@ -45,8 +47,12 @@
 	}
 	else
 	{
+		$reg_user = new reg($_SESSION['vkId']);
+		$rg = $reg_user->register();
+		echo $_SESSION['vkId']."<br>";
 		if(!isset($_POST['codes']))		//если пользователь зареган, предлагаем вводить коды
 		{
+			echo "Вы активировали ".$reg_user->codeCount." кодов";
 			include 'code_add_form.php';
 		}
 		else
@@ -63,11 +69,12 @@
 					echo $c.'<br>';
 				}
 			}
+			echo "Вы активировали ".$reg_user->codeCount." кодов";
 			include 'code_add_form.php';
 		}
 	}
 		
 ?>
-	
+
 </body>
 </html>
