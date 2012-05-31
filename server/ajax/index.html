@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Test Razin</title>
+	<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+	<script  type="text/javascript">
+	$(document).ready(function(){
+		$.getJSON('login.php', {check: 1}, function(data){
+			if(data)
+			{
+				$("<p> Ваш логин: "+data.login+"<br>У вас "+data.codeCount+" кодов </p>").appendTo("#main");
+				$("<input name='login' type='hidden' value="+data.login+" />").appendTo("#main");
+				$("#add_code").css("display", "inline");
+				$("<input id='login' name='login' type='hidden' value="+data.login+" />").appendTo("#codes_form");
+			}
+			else
+			{
+				$("#registration").css("display", "inline");
+			}
+		});
+		$("#regsub").click(function(){
+			$.getJSON('login.php', {login: $("#log").val()}, function(data){
+				if(data)
+				{
+					$("#main").empty();			
+					$("#registration").css("display", "none");
+					$("#add_code").css("display", "inline");
+					$("<p> Ваш логин: "+data.login+"<br>У вас "+data.codeCount+" кодов </p>").appendTo("#main");
+					$("<input id='login' name='login' type='hidden' value="+data.login+" />").appendTo("#codes_form");
+				}
+				else
+				{
+					$("<p>Не удалось авторизоваться</p>");
+				}
+			});			
+		}); 
+		$("#codesub").click(function(){			
+			$.getJSON('add_code.php', {login: $("#login").val(), codes: $("#codes").val()}, function(data1){
+				$("#bad_codes").remove();
+				$.getJSON('login.php', {login: $("#login").val()}, function(data){
+					$("#main").empty();
+					$("<p> Ваш логин: "+data.login+"<br>У вас "+data.codeCount+" кодов </p>").appendTo("#main");
+				});	
+				if(data1)
+				{		
+					
+					var items = "";
+					$.each(data1, function(key, val){						
+						items += "<br>"+val;
+					});	
+					
+					var Div = document.getElementById("add_code");
+					var Parag = document.createElement('P');
+					Parag.setAttribute('id', 'bad_codes');
+					Parag.innerHTML = " Не удалось зарегать следующие номера: " + items;
+					Div.insertBefore(Parag);
+				}
+			});
+		});
+	});
+	</script>
+</head>
+<body>
+<div id="main">
+</div>
+<div id='add_code' style='display:none;'>
+<form id='codes_form'>
+	коды: <textarea name='codes' id='codes'></textarea> <br>
+	<input type='button' id='codesub' value='отправить'> <br>		
+</form>	
+<br>
+<a href="logout.php">выход</a>
+</div>
+
+<div id='registration' style='display:none;'>
+<form>
+	VK id: <input type='text' name='vkId' id='log'> <br>
+	<input type='button' value='Зарегистрироваться/Войти' id='regsub'> <br>		
+</form>	
+</div>
+
+</body>
+</html>
