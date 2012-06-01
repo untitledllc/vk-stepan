@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
 		<div id="content">
 			<span id="openapi_status"></span>
 			<a href="http://vk.com/" target="_blank"><img src="http://vk.com/images/widget_logo.gif" alt="В Контакте"></a>
-			<a href="" id="openapi_userlink" target="_blank"><span id="openapi_user"></span>
+			<a href="" id="openapi_userlink" target="_blank"><span id="openapi_user"></span> 
 			<img src="http://vkontakte.ru/images/camera_a.gif" id="openapi_userphoto_big" />
 			</a>
 		</div>
@@ -98,16 +99,16 @@
    });
   }); 
  });*/
-var api=0;
+var api=0;/*
 if(top.location.host==undefined) {
 	document.getElementById('hm').innerHTML='Ифрейм загружен из приложения, а не с сайта';
-	include('http://vk.com/js/api/xd_connection.js?2');
+	*/include('http://vk.com/js/api/xd_connection.js?2');/*
 	
 } else {
 	document.getElementById('hm').innerHTML='Ифрейм загружен с сайта, а не из приложения';
 	include('http://vk.com/js/api/openapi.js');
 	api=1;
-}
+}*/
 	setTimeout(function() {
 		if(api==1) { // если с сайта
 			VK.init({
@@ -157,54 +158,83 @@ if(top.location.host==undefined) {
 				VK.loadParams(document.location.href);
 				var viewer_id = VK.params.viewer_id;
 				
-				VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo"}, function(data) {
+				VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo_big"}, function(data) {
 					var i = data.response[0];
 					$.getJSON('http://gurylyov.ru/samples/razin/login.php', {login:i.uid}, function(data){});
 					document.getElementById('openapi_status').innerHTML = 'user: '+i.uid;
 					document.getElementById('openapi_user').innerHTML = i.first_name + ' ' + i.last_name;
 					document.getElementById('openapi_userlink').href = 'http://vk.com/' + i.screen_name
-					document.getElementById('openapi_userphoto').src = i.photo;
+					document.getElementById('openapi_userphoto_big').src = i.photo_big;
 					
 					$.getJSON('http://gurylyov.ru/samples/razin/get_codes.php', {login: i.uid}, function(data1){
 						if(data1.code0 != undefined)
-							$("#code0").text(data1.code0);
+						{
+							$("#code0").val(data1.code0);
+							$("#code0").attr('disabled','disabled');
+						}
 						if(data1.code1 != undefined)
-							$("#code1").text(data1.code1);
+						{
+							$("#code1").val(data1.code1);
+							$("#code1").attr('disabled','disabled');
+						}
 						if(data1.code2 != undefined)
-							$("#code2").text(data1.code2);
+						{
+							$("#code2").val(data1.code2);
+							$("#code2").attr('disabled','disabled');
+						}
 						if(data1.code3 != undefined)
-							$("#code3").text(data1.code3);
+						{
+							$("#code3").val(data1.code3);
+							$("#code3").attr('disabled','disabled');
+						}
 						if(data1.code4 != undefined)
-							$("#code4").text(data1.code4);
+						{
+							$("#code4").val(data1.code4);
+							$("#code4").attr('disabled','disabled');
+						}
 						if(data1.code5 != undefined)
-							$("#code5").text(data1.code5);
+						{
+							$("#code5").val(data1.code5);
+							$("#code5").attr('disabled','disabled');
+						}
 						if(data1.code6 != undefined)
-							$("#code6").text(data1.code6);
+						{
+							$("#code6").val(data1.code6);
+							$("#code6").attr('disabled','disabled');
+						}
 						if(data1.code7 != undefined)
-							$("#code7").text(data1.code7);
+						{
+							$("#code7").val(data1.code7);
+							$("#code7").attr('disabled','disabled');
+						}
 						if(data1.code8 != undefined)
-							$("#code8").text(data1.code8);
+						{
+							$("#code8").val(data1.code8);
+							$("#code8").attr('disabled','disabled');
+						}
 						if(data1.code9 != undefined)
-							$("#code9").text(data1.code9);
+						{
+							$("#code9").val(data1.code9);
+							$("#code9").attr('disabled','disabled');
+						}
 					  
 					});
 					
 					$(".codes").each(function(indx, element){
-						$(element).keyup(function(e){					  
-							var v = $(element).val();    
-							if(v.length < 8) {
-								return false;
-							} else if(v.length == 8){
+						$(element).keyup(function(e){
+							var v = $(element).val();
+							if(v.length == 8){
+								alert('yes!')
 								$.getJSON('http://gurylyov.ru/samples/razin/add_code.php', {login: i.uid, codes: v}, function(data1){
 									if(data1)
 									{
-										
+										$(element).prev().addClass('icon-remove');
 									}
 									else
 									{
-										$(this).attr('disabled','disabled').addClass('disabled').blur();
-										$(this).nextAll('input').addClass('icon-remove');
-										$(this).prev().addClass('icon-ok');
+										$(element).attr('disabled','disabled').addClass('disabled').blur();
+										$(element).nextAll('input').addClass('icon-remove');
+										$(element).prev().addClass('icon-ok');
 									}
 								});
 							} else if(v.length > 8){

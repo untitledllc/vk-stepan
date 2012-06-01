@@ -8,7 +8,7 @@
 			$this->parsedCodes = array();
 			$this->badCodes = array();
 		}
-		function parseCodes()	//разбирает строку с кодами на массив, сразу удаляя кривые коды
+		function parseCodes()	//разбирает строку с кодами на массив, сразу удаляя кривые коды 
 		{
 			$this->parsedCodes = array();
 			$temp = "";
@@ -80,15 +80,16 @@
 				foreach($this->parsedCodes as $c)
 				{
 					//$query = sprintf("DELETE FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($c));		старый вариант с вычеркиванием кодов
-					//$res = mysql_query($query);			//удаляем код из базы кодов, т.к. теперь он активированный					
-					$query = sprintf("UPDATE pr_users SET %s = %s, codes_num = codes_num + 1 WHERE vk_id = '%s'", $current_field, mysql_real_escape_string($c), mysql_real_escape_string($this->vkId));
+					//$res = mysql_query($query);			//удаляем код из базы кодов, т.к. теперь он активированный		
+					$current_field = "code".$from_field;
+						$from_field++;					
+					$query = sprintf("UPDATE pr_users SET %s = '%s', codes_num = codes_num + 1 WHERE vk_id = '%s'", $current_field, mysql_real_escape_string($c), mysql_real_escape_string($this->vkId));
 					$res = mysql_query($query);
 					if($res)
 					{
 						//$temp .= $c . ' ';		//записываем эти коды снова в строку, которую потом допишем к кодам юзера в БД
 						//$t++;
-						$current_field = "code".$frorm_field;
-						$from_field++;
+						
 						$query = sprintf("UPDATE pr_codes SET status = '1' WHERE code = '%s'", mysql_real_escape_string($c));		//если код добавился пользователю, то меняем статус этого кода
 						mysql_query($query);
 					}
