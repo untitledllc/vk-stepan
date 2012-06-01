@@ -90,23 +90,14 @@
 </div>
 </div>
 <script>
-$("document").ready(function(){
+/*$("document").ready(function(){
   $(".codes").each(function(indx, element){
    $(element).keyup(function(e){
-    var v = $(element).val();    
-    if(v.length < 8) {
-		return false;
-	} else if(v.length == 8){
-		  $(this).attr('disabled','disabled').addClass('disabled').blur();
-		  $(this).nextAll('input').addClass('icon-remove');
-		  $(this).prev().addClass('icon-ok');
-    } else if(v.length > 8){
-		$(this).prev().addClass('icon-remove');
-    }
+    
 	
    });
   }); 
- });
+ });*/
 var api=0;
 if(top.location.host==undefined) {
 	document.getElementById('hm').innerHTML='Ифрейм загружен из приложения, а не с сайта';
@@ -168,53 +159,59 @@ if(top.location.host==undefined) {
 				
 				VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo"}, function(data) {
 					var i = data.response[0];
-					$.getJSON('login.php', {login:i.uid}, function(data){});
+					$.getJSON('http://gurylyov.ru/samples/razin/login.php', {login:i.uid}, function(data){});
 					document.getElementById('openapi_status').innerHTML = 'user: '+i.uid;
 					document.getElementById('openapi_user').innerHTML = i.first_name + ' ' + i.last_name;
 					document.getElementById('openapi_userlink').href = 'http://vk.com/' + i.screen_name
 					document.getElementById('openapi_userphoto').src = i.photo;
 					
-					$.getJSON('get_codes.php', {login: i.uid}, function(data1){
-					  if(data1.code0 != undefined)
-					   $("#code0").text(data1.code0);
-					  if(data1.code1 != undefined)
-					   $("#code1").text(data1.code1);
-					  if(data1.code2 != undefined)
-					   $("#code2").text(data1.code2);
-					  if(data1.code3 != undefined)
-					   $("#code3").text(data1.code3);
-					  if(data1.code4 != undefined)
-					   $("#code4").text(data1.code4);
-					  if(data1.code5 != undefined)
-					   $("#code5").text(data1.code5);
-					  if(data1.code6 != undefined)
-					   $("#code6").text(data1.code6);
-					  if(data1.code7 != undefined)
-					   $("#code7").text(data1.code7);
-					  if(data1.code8 != undefined)
-					   $("#code8").text(data1.code8);
-					  if(data1.code9 != undefined)
-					   $("#code9").text(data1.code9);
+					$.getJSON('http://gurylyov.ru/samples/razin/get_codes.php', {login: i.uid}, function(data1){
+						if(data1.code0 != undefined)
+							$("#code0").text(data1.code0);
+						if(data1.code1 != undefined)
+							$("#code1").text(data1.code1);
+						if(data1.code2 != undefined)
+							$("#code2").text(data1.code2);
+						if(data1.code3 != undefined)
+							$("#code3").text(data1.code3);
+						if(data1.code4 != undefined)
+							$("#code4").text(data1.code4);
+						if(data1.code5 != undefined)
+							$("#code5").text(data1.code5);
+						if(data1.code6 != undefined)
+							$("#code6").text(data1.code6);
+						if(data1.code7 != undefined)
+							$("#code7").text(data1.code7);
+						if(data1.code8 != undefined)
+							$("#code8").text(data1.code8);
+						if(data1.code9 != undefined)
+							$("#code9").text(data1.code9);
 					  
-					 });
-					 $(".codes").each(function(indx, element){
-					  $(element).keyup(function(e){
-					   var v = $(element).val();    
-					   if(v.length == 8){        
-						$.getJSON('add_code.php', {login: i.uid, codes: v}, function(data1){
-						 if(data1)
-						 {
-						  
-						 }
-						 else
-						 {
-						  $(element).attr('disable');
-						 }
+					});
+					
+					$(".codes").each(function(indx, element){
+						$(element).keyup(function(e){					  
+							var v = $(element).val();    
+							if(v.length < 8) {
+								return false;
+							} else if(v.length == 8){
+								$.getJSON('http://gurylyov.ru/samples/razin/add_code.php', {login: i.uid, codes: v}, function(data1){
+									if(data1)
+									{
+										
+									}
+									else
+									{
+										$(this).attr('disabled','disabled').addClass('disabled').blur();
+										$(this).nextAll('input').addClass('icon-remove');
+										$(this).prev().addClass('icon-ok');
+									}
+								});
+							} else if(v.length > 8){
+								$(this).prev().addClass('icon-remove');
+							}
 						});
-					   }      
-					  });
-					  
-					 });
+					});
 				});
 			});
 		}
