@@ -7,6 +7,7 @@
 		{
 			$this->vkId = $vkId_;
 			$this->codeCount = 0;
+			$this->currentCodes = array();
 		}
 		function register()
 		{
@@ -24,7 +25,7 @@
 				return self::ALREADY_EXIST;
 			}
 			
-			$query = sprintf("INSERT INTO razin_promo.pr_users (vk_id, codes, codes_num) VALUES ('%s', '', 0)", mysql_real_escape_string($this->vkId));
+			$query = sprintf("INSERT INTO razin_promo.pr_users (vk_id, codes_num) VALUES ('%s', 0)", mysql_real_escape_string($this->vkId));
 			$res = mysql_query($query);		//добавляем.
 			if(!$res)
 				return self::ADDING_FAILED;
@@ -32,7 +33,27 @@
 				return 1;
 			
 		}
+		function get_codes()
+		{
+			$query = sprintf("SELECT * FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+			$res = mysql_query($query);
+			if(mysql_num_rows($res) > 0)
+			{
+				$res = mysql_fetch_assoc($res);
+				for($ind = 0; $ind < 10; $ind++)
+				{
+					$code_ind = "code".$ind;
+					if($res[$code_ind] == '0')
+						break;
+					$this->currentCodes[$code_ind] = $res[$code_ind];
+				}
+				return 0;
+			}
+			else
+				return -1;
+		}
 		protected $vkId;
 		public $codeCount;
+		public $currentCodes;
 	}
 ?>
