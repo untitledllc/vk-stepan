@@ -50,7 +50,7 @@
 				foreach ($this->parsedCodes as $k => $c)
 				{
 					//$query = sprintf("SELECT * FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($c));  старый вариант
-					$query = sprintf("SELECT * FROM razin_promo.pr_codes WHERE code = '%s' AND status = '0'", mysql_real_escape_string($c));
+					$query = sprintf("SELECT * FROM pr_codes WHERE code = '%s' AND status = '0'", mysql_real_escape_string($c));
 					$res = mysql_query($query);
 					if(mysql_num_rows($res) <= 0)	//если кода нет - записываем его в массив плохих кодов
 					{
@@ -67,7 +67,7 @@
 			{
 				//$temp = "";
 				//$t = 0;
-				$query = sprintf("SELECT codes_num FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+				$query = sprintf("SELECT codes_num FROM pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
 				$res = mysql_query($query);
 				$from_field;		//в какое поле вставлять очередной код
 				if(mysql_num_rows($res) > 0)
@@ -81,7 +81,7 @@
 				{
 					//$query = sprintf("DELETE FROM razin_promo.pr_codes WHERE code = '%s'", mysql_real_escape_string($c));		старый вариант с вычеркиванием кодов
 					//$res = mysql_query($query);			//удаляем код из базы кодов, т.к. теперь он активированный					
-					$query = sprintf("UPDATE razin_promo.pr_users SET %s = %s, codes_num = codes_num + 1 WHERE vk_id = '%s'", $current_field, mysql_real_escape_string($c), mysql_real_escape_string($this->vkId));
+					$query = sprintf("UPDATE pr_users SET %s = %s, codes_num = codes_num + 1 WHERE vk_id = '%s'", $current_field, mysql_real_escape_string($c), mysql_real_escape_string($this->vkId));
 					$res = mysql_query($query);
 					if($res)
 					{
@@ -89,7 +89,7 @@
 						//$t++;
 						$current_field = "code".$frorm_field;
 						$from_field++;
-						$query = sprintf("UPDATE razin_promo.pr_codes SET status = '1' WHERE code = '%s'", mysql_real_escape_string($c));		//если код добавился пользователю, то меняем статус этого кода
+						$query = sprintf("UPDATE pr_codes SET status = '1' WHERE code = '%s'", mysql_real_escape_string($c));		//если код добавился пользователю, то меняем статус этого кода
 						mysql_query($query);
 					}
 					else

@@ -11,11 +11,11 @@
 		}
 		function register()
 		{
-			$query = sprintf("SELECT * FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+			$query = sprintf("SELECT * FROM pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
 			$res = mysql_query($query);		//проверяем нет ли этого пользователя
 			if(mysql_num_rows($res) > 0)	
 			{
-				$query = sprintf("SELECT codes_num FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+				$query = sprintf("SELECT codes_num FROM pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
 				$res = mysql_query($query);
 				if(mysql_num_rows($res) > 0)
 				{
@@ -25,7 +25,7 @@
 				return self::ALREADY_EXIST;
 			}
 			
-			$query = sprintf("INSERT INTO razin_promo.pr_users (vk_id, codes_num) VALUES ('%s', 0)", mysql_real_escape_string($this->vkId));
+			$query = sprintf("INSERT INTO pr_users (vk_id, codes_num) VALUES ('%s', 0)", mysql_real_escape_string($this->vkId));
 			$res = mysql_query($query);		//добавляем.
 			if(!$res)
 				return self::ADDING_FAILED;
@@ -35,7 +35,7 @@
 		}
 		function get_codes()
 		{
-			$query = sprintf("SELECT * FROM razin_promo.pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+			$query = sprintf("SELECT * FROM pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
 			$res = mysql_query($query);
 			if(mysql_num_rows($res) > 0)
 			{
