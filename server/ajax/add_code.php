@@ -7,10 +7,15 @@
 	$ch->checkCodes();
 	$ch->addCodes();
 	if(count($ch->badCodes) > 0)
+	{		
+			$result = array();
+			foreach($ch->badCodes as $k => $bc) 
+				$result['elem'.$k] = $bc;
+			echo json_encode($result);		
+	}
+	else
 	{
-		$result = array();
-		foreach($ch->badCodes as $k => $bc)
-			$result['elem'.$k] = $bc;
-		echo json_encode($result);
+		if(count($ch->parsedCodes) == 0)
+			echo json_encode(array('elem0' => $_GET['codes']));
 	}
 ?>

@@ -14,132 +14,159 @@
 	  #codes_form {
 		padding-top: 20px;
 	  }
-	  .status {
+	.status {
 		float: left;
 		vertical-align: middle;
 		margin: 7px 7px 7px 0;
+	}
+	#login, #logout {
+		height: 21px;
+		background: url("./img/login.png") no-repeat;
+	}
+	#login {
+		width: 125px;
+	}
+	#logout {
+		width: 126px;
+		background-position: 0 -21px;
+	}
+	.load {
+		background: url("./img/load.gif") no-repeat;
 	}
     </style>
 </head>
 <body>
 <div class="container">
-<div class="row">
-  <div class="span5">
-	  <span id="hm"></span>
-		<div id="login_button" onclick="VK.auth.login(authInfo);"></div>
-		<a href="#" onclick="VK.auth.logout(authInfo);" id="logout_button">logout</a>
-		<div id="content">
-			<span id="openapi_status"></span>
-			<a href="http://vk.com/" target="_blank"><img src="http://vk.com/images/widget_logo.gif" alt="В Контакте"></a>
-			<a href="" id="openapi_userlink" target="_blank"><span id="openapi_user"></span> 
-			<img src="http://vkontakte.ru/images/camera_a.gif" id="openapi_userphoto_big" />
-			</a>
-		</div>
-	</div>
-  <div class="span3">
-	  <form action="" id="codes_form">
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code0">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code1">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code2">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code3">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code4">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code5">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code6">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code7">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code8">
-			</label>
-			<label for="" class="codes_label">
-				<i class="icon-black status"></i>
-				<input type="text" class="codes" id="code9">
-			</label>
-			<label for="" class="form-actions">
-				<button type="submit" class="btn btn-primary disabled">
-					<i class="icon-filter icon-white"></i> Отправить
-				</button>
-				<button type="submit" class="btn disabled">
-					<i class="icon-trash"></i> Сбросить
-				</button>
-			</label>
-		</form>
-	</div>
-</div>
+	<span id="hm"></span>
+	<a href="" id="login"></a>
+	<a href="" id="logout"></a>
+	<form action="" id="codes_form">
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code0">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code1">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code2">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code3">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code4">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code5">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code6">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code7">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code8">
+		</label>
+		<label for="" class="codes_label">
+			<i class="icon-black status"></i>
+			<input type="text" class="codes" id="code9">
+		</label>
+	</form>
 </div>
 <script>
-/*$("document").ready(function(){
-  $(".codes").each(function(indx, element){
-   $(element).keyup(function(e){
-    
-	
-   });
-  }); 
- });*/
-var api=0;/*
+var api=0;
 if(top.location.host==undefined) {
-	document.getElementById('hm').innerHTML='Ифрейм загружен из приложения, а не с сайта';
-	*/include('http://vk.com/js/api/xd_connection.js?2');/*
+	console.log('Ифрейм загружен из приложения, а не с сайта');
+	include('http://vk.com/js/api/xd_connection.js?2');
 	
 } else {
-	document.getElementById('hm').innerHTML='Ифрейм загружен с сайта, а не из приложения';
+	console.log('Ифрейм загружен с сайта, а не из приложения');
 	include('http://vk.com/js/api/openapi.js');
 	api=1;
-}*/
+}
+$(function() {
+pic = new Image();
+pic.src="./img/load.gif";
 	setTimeout(function() {
 		if(api==1) { // если с сайта
+			$('#login').click(function(event){
+				event.preventDefault();
+				VK.Auth.login(authInfo, VK.access.FRIENDS);
+			});
+			$('#logout').click(function(event){
+				event.preventDefault();
+				VK.Auth.logout(authInfo);
+			});
 			VK.init({
 			  apiId: 1938435
 			});
 			function authInfo(response) {
 			  if (response.session) {
-				document.getElementById('openapi_status').innerHTML = 'user: '+response.session.mid;
-				document.getElementById('login_button').style.display = 'none';
-				document.getElementById('logout_button').style.display = 'block';
-				document.getElementById('content').style.display = 'block';
+				console.log('user: '+response.session.mid);
+				document.getElementById('login').style.display = 'none';
+				document.getElementById('logout').style.display = 'block';
 			  } else {
-				document.getElementById('openapi_status').innerHTML = 'not auth';
-				document.getElementById('logout_button').style.display = 'none';
-				document.getElementById('content').style.display = 'none'; 
-				document.getElementById('login_button').style.display = 'block';
-				VK.UI.button('login_button');
+				console.log('user: not auth');
+				document.getElementById('logout').style.display = 'none';
+				document.getElementById('login').style.display = 'block';
 			  }
 			}
 			VK.Observer.subscribe('auth.login', function(response) {
 				var photo = 'return { me: API.users.get({uids: API.getVariable({key: 1280}), fields: "screen_name,photo_big"})[0]};';
 				VK.Api.call('execute', {'code': photo}, _getProfile);
 			});
-					
 			function _getProfile(data) {
 				if (data.response) {
 					if (data.response.me) {
 						var i = data.response.me;
-						document.getElementById('openapi_user').innerHTML = i.first_name + ' ' + i.last_name;
-						document.getElementById('openapi_userlink').href = 'http://vk.com/' + i.screen_name;
-						document.getElementById('openapi_userphoto_big').src = i.photo_big;
+						console.log('user: ' + i.first_name + ' ' + i.last_name);
+						console.log('link: http://vk.com/' + i.screen_name);
+						console.log('photo: ' + i.photo_big);
+						
+						$.getJSON('http://gurylyov.ru/samples/razin/get_codes.php', {login: i.uid}, function(data1){
+					
+						for (var i = 0; i < 10; i++) {
+								if(data1['code' + i] != undefined) {
+										$('#code' + i).val(data1['code' + i]);
+										$('#code' + i).attr('disabled', 'disabled');
+										$('#code' + i).prev().addClass('icon-ok');
+								}
+						}
+					});
+					
+					$(".codes").each(function(indx, element){
+						$(element).keyup(function(e){
+							var v = $(element).val();
+							if(v.length == 8){
+								$(element).attr('disabled','disabled').addClass('disabled').blur();
+								$(element).prev().addClass('load');
+								$.getJSON('http://gurylyov.ru/samples/razin/add_code.php', {login: i.uid, codes: v}, function(data1){
+									if(data1)
+									{
+										$(element).prev().removeClass('load').addClass('icon-remove');
+										$(element).removeAttr('disabled').removeClass('disabled').blur();
+									}
+									else
+									{
+										$(element).prev().removeClass('load').addClass('icon-ok');
+									}
+								});
+							} else if(v.length > 8){
+								$(this).prev().addClass('icon-remove');
+							}
+						});
+					});
+						
 					}
 				} else {
 					document.getElementById('content').innerHTML = 'error'; 
@@ -150,8 +177,8 @@ if(top.location.host==undefined) {
 			
 		} else { // если из приложения
 		
-			document.getElementById('login_button').style.display = 'none';
-			document.getElementById('logout_button').style.display = 'none';
+			document.getElementById('login').style.display = 'none';
+			document.getElementById('logout').style.display = 'none';
 			
 			VK.init(function() {
 			
@@ -161,79 +188,36 @@ if(top.location.host==undefined) {
 				VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo_big"}, function(data) {
 					var i = data.response[0];
 					$.getJSON('http://gurylyov.ru/samples/razin/login.php', {login:i.uid}, function(data){});
-					document.getElementById('openapi_status').innerHTML = 'user: '+i.uid;
-					document.getElementById('openapi_user').innerHTML = i.first_name + ' ' + i.last_name;
-					document.getElementById('openapi_userlink').href = 'http://vk.com/' + i.screen_name
-					document.getElementById('openapi_userphoto_big').src = i.photo_big;
+						console.log('user: '+i.uid);
+						console.log('user: ' + i.first_name + ' ' + i.last_name);
+						console.log('link: http://vk.com/' + i.screen_name);
+						console.log('photo: ' + i.photo_big);
 					
 					$.getJSON('http://gurylyov.ru/samples/razin/get_codes.php', {login: i.uid}, function(data1){
-						if(data1.code0 != undefined)
-						{
-							$("#code0").val(data1.code0);
-							$("#code0").attr('disabled','disabled');
+					
+						for (var i = 0; i < 10; i++) {
+								if(data1['code' + i] != undefined) {
+										$('#code' + i).val(data1['code' + i]);
+										$('#code' + i).attr('disabled', 'disabled');
+										$('#code' + i).prev().addClass('icon-ok');
+								}
 						}
-						if(data1.code1 != undefined)
-						{
-							$("#code1").val(data1.code1);
-							$("#code1").attr('disabled','disabled');
-						}
-						if(data1.code2 != undefined)
-						{
-							$("#code2").val(data1.code2);
-							$("#code2").attr('disabled','disabled');
-						}
-						if(data1.code3 != undefined)
-						{
-							$("#code3").val(data1.code3);
-							$("#code3").attr('disabled','disabled');
-						}
-						if(data1.code4 != undefined)
-						{
-							$("#code4").val(data1.code4);
-							$("#code4").attr('disabled','disabled');
-						}
-						if(data1.code5 != undefined)
-						{
-							$("#code5").val(data1.code5);
-							$("#code5").attr('disabled','disabled');
-						}
-						if(data1.code6 != undefined)
-						{
-							$("#code6").val(data1.code6);
-							$("#code6").attr('disabled','disabled');
-						}
-						if(data1.code7 != undefined)
-						{
-							$("#code7").val(data1.code7);
-							$("#code7").attr('disabled','disabled');
-						}
-						if(data1.code8 != undefined)
-						{
-							$("#code8").val(data1.code8);
-							$("#code8").attr('disabled','disabled');
-						}
-						if(data1.code9 != undefined)
-						{
-							$("#code9").val(data1.code9);
-							$("#code9").attr('disabled','disabled');
-						}
-					  
 					});
 					
 					$(".codes").each(function(indx, element){
 						$(element).keyup(function(e){
 							var v = $(element).val();
 							if(v.length == 8){
-								alert('yes!')
+								$(element).attr('disabled','disabled').addClass('disabled').blur();
+								$(element).prev().addClass('load');
 								$.getJSON('http://gurylyov.ru/samples/razin/add_code.php', {login: i.uid, codes: v}, function(data1){
 									if(data1)
 									{
-										$(element).prev().addClass('icon-remove');
+										$(element).prev().removeClass('load').addClass('icon-remove');
+										$(element).removeAttr('disabled').removeClass('disabled').blur();
 									}
 									else
 									{
-										$(element).attr('disabled','disabled').addClass('disabled').blur();
-										$(element).nextAll('input').addClass('icon-remove');
 										$(element).prev().addClass('icon-ok');
 									}
 								});
@@ -246,14 +230,13 @@ if(top.location.host==undefined) {
 			});
 		}
 	}, 1000);
+});
 function include(adr) {
-	setTimeout(function() {
-		var el = document.createElement('script');
-		el.src = adr;
-		el.type = 'text/javascript';
-		el.async = true;
-		document.getElementsByTagName('head')[0].appendChild(el);
-	}, 0);
+	var el = document.createElement('script');
+	el.src = adr;
+	el.type = 'text/javascript';
+	el.async = true;
+	document.getElementsByTagName('head')[0].appendChild(el);
 }
 </script>
 <!-- <script src="../assets/js/jquery.js"></script>

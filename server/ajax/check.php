@@ -20,7 +20,7 @@
 				}
 				else
 				{
-					if(strlen($temp) > 0)
+		 			if(strlen($temp) > 0)
 					{
 						if(strlen($temp) != 8)
 							$this->badCodes[] = $temp;
@@ -103,7 +103,7 @@
 		protected $checked = false;
 		public $codeArr;			//строка с кодами, (через пробел или запятую или \n и т.д.)
 		public $badCodes;			//коды не прошедшие проверку
-		protected $parsedCodes;		//массив хороших, годных кодов
+		public $parsedCodes;		//массив хороших, годных кодов
 		protected $vkId;			//ид юзера в вк
 	
 

@@ -1,4 +1,4 @@
-<?php $uname = "root";
+<?php $uname = "foggy_razin";
 $pass = "666666";
 $serv = "localhost";
 $dbname = "foggy_razin";
