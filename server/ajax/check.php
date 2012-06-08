@@ -73,8 +73,8 @@
 				if(mysql_num_rows($res) > 0)
 				{
 					$res = mysql_fetch_assoc($res);
-					if($res['codes_num'] > 10)
-						return -2;
+					if($res['codes_num'] > 5)
+						return -2; 
 					$from_field = $res['codes_num'];
 				}
 				foreach($this->parsedCodes as $c)

@@ -9,7 +9,13 @@
 		$rg = $reg_user->register();
 		if($rg == 1 || $rg == reg::ALREADY_EXIST)
 		{			
-			echo json_encode(array("login" => $_GET['login'], "codeCount" => $reg_user->codeCount));
+			$rg = $reg_user->get_codes();
+			$ret = array();
+			$ret['login'] = $_GET['login'];
+			$ret['codeCount'] = $reg_user->codeCount;
+			for($i = 0; $i < $reg_user->codeCount; $i++)
+				$ret['code'.$i] = $reg_user->currentCodes['code'.$i];
+			echo json_encode($ret);
 		}
 	}
 ?>
