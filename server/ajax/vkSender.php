@@ -20,11 +20,24 @@
 		$tmp_name;
 		if($src && $logo)
 		{
+			if(ImageSX($logo) > (ImageSX($src) / 2))
+			{
+				$newLogoSX = ImageSX($src) / 2;
+				$scale = $newLogoSX / ImageSX($logo);
+				$newLogoSY = ImageSY($logo) * $scale;
+				$newLogo = ImageCreateTrueColor($newLogoSX, $newLogoSY);
+				ImageAlphaBlending($newLogo, false);
+				ImageSaveAlpha($newLogo, true);
+				$transparent = imagecolorallocatealpha($newLogo, 255, 255, 255, 127);
+				ImageFilledRectangle($newLogo, 0, 0, $newLogoSX, $newLogoSY, $transparent);
+				ImageCopyResampled($newLogo, $logo, 0, 0, 0, 0, $newLogoSX, $newLogoSY, ImageSX($logo), ImageSY($logo));
+				$logo = $newLogo;
+			}
 			$dx = ImageSX($src) - ImageSX($logo);
 			$dy = ImageSY($src) - ImageSY($logo);
 			ImageCopy($src, $logo, $dx, $dy, 0, 0, ImageSX($logo), ImageSY($logo));
 			$tmp_name = "temp_user_avatar_".$_POST['login'].".jpg";
-			ImageJPEG($src, $tmp_name);
+			ImageJPEG($src, $tmp_name, 100);
 			ImageDestroy($src);
 			ImageDestroy($logo);
 		}

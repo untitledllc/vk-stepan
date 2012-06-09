@@ -1,7 +1,7 @@
-<?php $uname = "foggy_razin";
-$pass = "666666";
+<?php $uname = "stepan.vkapps";
+$pass = "kilsEbeetAiWupWijpeshouvFuigJisp";
 $serv = "localhost";
-$dbname = "foggy_razin";
+$dbname = "stepan.vkapps";
 $connect = mysql_connect($serv, $uname, $pass) or die(mysql_error());
 mysql_query("SET NAMES utf8;", $connect);
 mysql_select_db($dbname, $connect);

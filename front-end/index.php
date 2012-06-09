@@ -88,7 +88,7 @@ var count=0, pic = new Image();
 pic.src='./img/load.gif'; // предзагрузка загрузки
 <? if(!isset($_GET['vk'])) { /* если с сайта */ ?>
 VK.init({
-  apiId: 1938435
+  apiId: 2988039
 });
 $('#login').click(function(event){
 	event.preventDefault();
@@ -119,11 +119,23 @@ function _getProfile(data) {
 	if (data.response) {
 		if (data.response.me) {
 			var i = data.response.me;
-			$.getJSON('http://gurylyov.ru/samples/razin/login.php', {login:i.uid}, function(data){
+			$.getJSON('login.php', {login:i.uid}, function(data){
 				count=data.codeCount;
 				console.log('user: ' + i.uid + ', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 				if(count==5) {
 					document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
+					VK.api('photos.getProfileUploadServer', function(data) {
+						alert("here1");
+						document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
+						if(data.response.upload_url) {
+								$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: 1}, function(json){
+									VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash}, function(data2) {
+										VK.api.call("showProfilePhotoBox", data2.response.photo_hash);
+									});
+								}, 'json');
+						}
+					});
+				
 				} else {
 					console.log('осталось: ' + (5-count));
 					document.getElementById('content').style.display = 'block';
@@ -137,23 +149,14 @@ function _getProfile(data) {
 					}
 				}
 			});
-			VK.api('photos.getProfileUploadServer', function(data) {
-				document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
-				if(data.response.upload_url) {
-						$.post("vkSender.php", {upload_url: data.response.upload_url}, function(json){
-							VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash}, function(data2) {
-								VK.api.call("showProfilePhotoBox", data2.response.photo_hash);
-							});
-						}, 'json');
-				}
-			});
+			
 		$(".codes").each(function(indx, element){
 			$(element).keyup(function(e){
 				var v = $(element).val();
 				if(v.length == 8) {
 					$(element).attr('disabled','disabled').addClass('disabled').blur();
 					$(element).prev().addClass('load');
-					$.getJSON('http://gurylyov.ru/samples/razin/add_code.php', {login: i.uid, codes: v}, function(data1){
+					$.getJSON('add_code.php', {login: i.uid, codes: v}, function(data1){
 						if(data1) {
 							$(element).prev().removeClass('load icon-ok').addClass('icon-remove');
 							$(element).removeAttr('disabled').removeClass('disabled').blur();
@@ -162,8 +165,20 @@ function _getProfile(data) {
 							$(element).prev().removeClass('load icon-remove').addClass('icon-ok');
 							count++;
 							if(count==5) {
+								
 								document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
 								document.getElementById('content').style.display = 'none';
+								VK.api('photos.getProfileUploadServer', function(data) {
+									alert("here2");
+									document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
+									if(data.response.upload_url) {
+											$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: 1}, function(json){
+												VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash}, function(data2) {
+													VK.api.call("showProfilePhotoBox", data2.response.photo_hash);
+												});
+											}, 'json');
+									}
+								});
 							} else {
 								console.log('осталось: ' + (5-count));
 							}
@@ -184,17 +199,24 @@ function _getProfile(data) {
 VK.Auth.getLoginStatus(authInfo);
 <? } else { /* если из приложения */ ?>
 VK.init(function() {
-
+	
 	VK.loadParams(document.location.href);
 	var viewer_id = VK.params.viewer_id;
 	VK.callMethod('showInstallBox',4);
-	VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo_big"}, function(data) {
-		var i = data.response[0];
-		$.getJSON('http://gurylyov.ru/samples/razin/login.php', {login:i.uid}, function(data) {
+	VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo_big"}, function(data0) {
+		var i = data0.response[0];
+		$.getJSON('login.php', {login:i.uid}, function(data) {
 			count=data.codeCount;
 			console.log('user: '+i.uid+', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 			if(count==5) {
 				document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
+				VK.api('photos.getProfileUploadServer', function(data) {					
+					if(data.response.upload_url) {
+						$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: 1}, function(json){
+							VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash});
+						}, 'json');
+					}
+				});
 			} else {
 				console.log('осталось: ' + (5-count));
 				document.getElementById('content').style.display = 'block';
@@ -208,20 +230,14 @@ VK.init(function() {
 				}
 			}
 		});
-		VK.api('photos.getProfileUploadServer', function(data) {
-			if(data.response.upload_url) {
-				$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: 1}, function(json){
-					VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash});
-				}, 'json');
-			}
-		});
+		
 		$(".codes").each(function(indx, element){
 			$(element).keyup(function(e){
 				var v = $(element).val();
 				if(v.length == 8) {
 					$(element).attr('disabled','disabled').addClass('disabled').blur();
 					$(element).prev().addClass('load');
-					$.getJSON('http://gurylyov.ru/samples/razin/add_code.php', {login: i.uid, codes: v}, function(data1){
+					$.getJSON('add_code.php', {login: i.uid, codes: v}, function(data1){
 						if(data1) {
 							$(element).prev().removeClass('load icon-ok').addClass('icon-remove');
 							$(element).removeAttr('disabled').removeClass('disabled').blur();
@@ -232,6 +248,13 @@ VK.init(function() {
 							if(count==5) {
 								document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
 								document.getElementById('content').style.display = 'none';
+								VK.api('photos.getProfileUploadServer', function(data) {
+									if(data.response.upload_url) {
+										$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: 1}, function(json){
+											VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash});
+										}, 'json');
+									}
+								});
 							} else {
 								console.log('осталось: ' + (5-count));
 							}

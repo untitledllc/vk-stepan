@@ -40,7 +40,7 @@
 			if(mysql_num_rows($res) > 0)
 			{
 				$res = mysql_fetch_assoc($res);
-				for($ind = 0; $ind < 10; $ind++)
+				for($ind = 0; $ind < 5; $ind++)
 				{
 					$code_ind = "code".$ind;
 					if($res[$code_ind] == '0')
