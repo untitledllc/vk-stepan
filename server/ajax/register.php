@@ -3,6 +3,8 @@
 	{
 		const ALREADY_EXIST = -1;
 		const ADDING_FAILED = -2;
+		const USER_BANNED = -3;
+		const IP_BANNED = -4;
 		function __construct($vkId_)
 		{
 			$this->vkId = $vkId_;
@@ -11,10 +13,29 @@
 		}
 		function register()
 		{
+			$query = sprintf("SELECT * FROM pr_ip_banned WHERE ip = INET_ATON('%s')", $_SERVER['REMOTE_ADDR']);
+			$res = mysql_query($query);
+			if(mysql_num_rows($res) > 0)
+			{
+				$res = mysql_fetch_assoc($res);
+				if(time() - $res['time'] > 86400)
+				{
+					$query = sprintf("DELETE FROM pr_ip_banned WHERE ip = INET_ATON('%s')", $_SERVER['REMOTE_ADDR']);
+					$res = mysql_query($query);
+				}
+				else
+					return self::IP_BANNED;
+			}
 			$query = sprintf("SELECT * FROM pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
 			$res = mysql_query($query);		//проверяем нет ли этого пользователя
 			if(mysql_num_rows($res) > 0)	
 			{
+				$query = sprintf("SELECT * FROM pr_banned WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+				$res = mysql_query($query);
+				if(mysql_num_rows($res) > 0)
+				{
+					return self::USER_BANNED;
+				}
 				$query = sprintf("SELECT codes_num FROM pr_users WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
 				$res = mysql_query($query);
 				if(mysql_num_rows($res) > 0)

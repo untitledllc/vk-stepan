@@ -17,5 +17,15 @@
 				$ret['code'.$i] = $reg_user->currentCodes['code'.$i];
 			echo json_encode($ret);
 		}
+		elseif($rg == reg::USER_BANNED)
+		{
+			$ret = array('banned' => 'login');
+			echo json_encode($ret);
+		}
+		elseif($rg == reg::IP_BANNED)
+		{
+			$ret = array('banned' => 'ip');
+			echo json_encode($ret);
+		}
 	}
 ?>
