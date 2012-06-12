@@ -4,18 +4,18 @@
     if (isset($_POST["upload_url"])) {
         $upload_url = $_POST["upload_url"];
 		$src = @ImageCreateFromJPEG($_POST['ava']);
-		switch($_POST['logo'])
+		
+		for($i = 0; $i < 200; $i++)
 		{
-			case 1:
-				$logo = @ImageCreateFromPNG("logo1.png");	
-			break;
-			case 2:
-				$logo = @ImageCreateFromPNG("logo2.png");	
-			break;
-			case 3:
-				$logo = @ImageCreateFromPNG("logo3.png");	
-			break;
+			if($i == $_POST['logo'])
+			{
+				$i++;
+				$logoFName = 'logo'.$i.'.png';
+				$logo = ImageCreateFromPNG($logoFName);
+				break;
+			}
 		}
+		
 		ImageAlphaBlending($logo, true);
 		$tmp_name;
 		if($src && $logo)
@@ -54,11 +54,8 @@
         
 		unlink($tmp_name);
 		
-        echo $result;/* = json_decode($result);
+        echo $result;
        
-        $mess = array ("server" => $result->server, "photo" => $result->photo, "hash" => $result->hash);
-       
-        echo json_encode($mess);*/
-       
+     
     }
 ?>

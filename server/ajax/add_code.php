@@ -3,7 +3,7 @@
 	require_once 'db_conf.php';
 	require_once 'check.php';
 	
-	$ch = new Checker($_GET['login'], $_GET['codes']);		//добавляем коды
+	$ch = new Checker($_POST['login'], $_POST['codes']);		//добавляем коды
 	
 	$ret = $ch->checkUser();
 	
@@ -62,9 +62,9 @@
 				}
 				if($banned)
 				{
-					$query = sprintf("INSERT INTO pr_banned (vk_id) VALUES ('%s')", mysql_real_escape_string($_GET['login']));
+					$query = sprintf("INSERT INTO pr_banned (vk_id) VALUES ('%s')", mysql_real_escape_string($_POST['login']));
 					$res = mysql_query($query);
-					$query = sprintf("INSERT INTO pr_ip_banned (ip, time) VALUES (INET_ATON('%s'), '%d')", $_SERVER['REMOTE_ADDR'], time());
+					$query = sprintf("INSERT INTO pr_ip_banned (ip, time) VALUES (INET_NTOA('%s'), '%d')", $_SERVER['REMOTE_ADDR'], time());
 					$res = mysql_query($query);
 					$ret = array('banned' => 'login');
 					echo json_encode($ret);
@@ -124,7 +124,7 @@
 				else
 				{
 					if(count($ch->parsedCodes) == 0)
-						echo json_encode(array('elem0' => $_GET['codes']));
+						echo json_encode(array('elem0' => $_POST['codes']));
 				}
 			}
 		}
