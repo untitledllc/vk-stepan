@@ -245,7 +245,7 @@ function _getProfile(data) {
 		if (data.response.me) {
 			var i = data.response.me;
 			$.getJSON('login.php', {login:i.uid}, function(data){
-				if(data.banned) {
+				if(data.banned!=0) {
 					if(data.banned=='ip') {
 						document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
 					} else if(data.banned=='login') {
@@ -256,6 +256,7 @@ function _getProfile(data) {
 				console.log('user: ' + i.uid + ', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 				if(count==5) {
 					document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке,<br>в знак дружбы с легендарным пиво.</p>';
+					document.getElementById('content').style.display='none';
 					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3"><img src="logo4.png" class="logo" id="logo4"><img src="logo5.png" class="logo" id="logo5"><img src="logo6.png" class="logo" id="logo6"></a>';
 					VK.api('photos.getProfileUploadServer', function(data) {
 					document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
@@ -287,28 +288,28 @@ function _getProfile(data) {
 					$(element).attr('disabled','disabled').addClass('disabled').blur();
 					$(element).prev().addClass('load');
 					$.post('add_code.php', {login: i.uid, codes: v}, function(data1){
-						if(data1.banned) {
+						if(data1.banned!=0) {
 							if(data1.banned=='ip') {
 								document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
 							} else if(data1.banned=='login') {
 								document.getElementById('content').innerHTML=i.first_name+', ты забанен!';
 							}
-						} else if(data1.blocked) {
+						} else if(data1.blocked!=0) {
 							document.getElementById('content').innerHTML=i.first_name+', Вы слишком часто вводите коды! Попробуйте снова через пару минут.';
 						}
-						if(data1) {
-							$(element).prev().removeClass('load ok').addClass('remove');
-							$(element).removeAttr('disabled').removeClass('disabled').blur();
-						}
-						else {
+						if(data1.ok==1) {
 							$(element).prev().removeClass('load remove').addClass('ok');
 							count++;
 							if(count==5) {
 								document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке,<br>в знак дружбы с легендарным пиво.</p>';
+								document.getElementById('content').style.display='none';
 								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3"><img src="logo4.png" class="logo" id="logo4"><img src="logo5.png" class="logo" id="logo5"><img src="logo6.png" class="logo" id="logo6"></a>';
 							} else {
 								console.log('осталось: ' + (5-count));
 							}
+						} else {
+							$(element).prev().removeClass('load ok').addClass('remove');
+							$(element).removeAttr('disabled').removeClass('disabled').blur();
 						}
 					}, 'json');
 				} else if(v.length > 8){
@@ -333,7 +334,7 @@ VK.init(function() {
 	VK.api("getProfiles", {uids:viewer_id,fields:"screen_name,photo_big"}, function(data) {
 		var i = data.response[0];
 		$.getJSON('login.php', {login:i.uid}, function(data) {
-			if(data.banned) {
+			if(data.banned!=0) {
 				if(data.banned=='ip') {
 					document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
 				} else if(data.banned=='login') {
@@ -344,6 +345,7 @@ VK.init(function() {
 			console.log('user: '+i.uid+', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 			if(count==5) {
 				document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
+				document.getElementById('content').style.display='none';
 				document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3"><img src="logo4.png" class="logo" id="logo4"><img src="logo5.png" class="logo" id="logo5"><img src="logo6.png" class="logo" id="logo6">';
 				$(".logo").each(function(indx, element) {
 					$(element).click(function(event){
@@ -378,20 +380,16 @@ VK.init(function() {
 					$(element).attr('disabled','disabled').addClass('disabled').blur();
 					$(element).prev().addClass('load');
 					$.post('add_code.php', {login: i.uid, codes: v}, function(data1){
-						if(data1.banned) {
+						if(data1.banned!=0){
 							if(data1.banned=='ip') {
 								document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
 							} else if(data1.banned=='login') {
 								document.getElementById('content').innerHTML=i.first_name+', ты забанен!';
 							}
-						} else if(data1.blocked) {
+						} else if(data1.blocked!=0) {
 							document.getElementById('content').innerHTML=i.first_name+', Вы слишком часто вводите коды! Попробуйте снова через пару минут.';
 						}
-						if(data1) {
-							$(element).prev().removeClass('load ok').addClass('remove');
-							$(element).removeAttr('disabled').removeClass('disabled').blur();
-						}
-						else {
+						if(data1.ok==1) {
 							$(element).prev().removeClass('load remove').addClass('ok');
 							count++;
 							if(count==5) {
@@ -414,6 +412,9 @@ VK.init(function() {
 							} else {
 								console.log('осталось: ' + (5-count));
 							}
+						} else {
+							$(element).prev().removeClass('load ok').addClass('remove');
+							$(element).removeAttr('disabled').removeClass('disabled').blur();
 						}
 					}, 'json');
 				} else if(v.length > 8){

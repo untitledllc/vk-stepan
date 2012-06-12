@@ -15,16 +15,18 @@
 			$ret['codeCount'] = $reg_user->codeCount;
 			for($i = 0; $i < $reg_user->codeCount; $i++)
 				$ret['code'.$i] = $reg_user->currentCodes['code'.$i];
+			$ret['banned'] = '0';
+			$ret['blocked'] = '0';
 			echo json_encode($ret);
 		}
 		elseif($rg == reg::USER_BANNED)
 		{
-			$ret = array('banned' => 'login');
+			$ret = array('banned' => 'login', 'blocked' => '0');
 			echo json_encode($ret);
 		}
 		elseif($rg == reg::IP_BANNED)
 		{
-			$ret = array('banned' => 'ip');
+			$ret = array('banned' => 'ip', 'blocked' => '0');
 			echo json_encode($ret);
 		}
 	}

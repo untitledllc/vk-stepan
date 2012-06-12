@@ -9,12 +9,12 @@
 	
 	if($ret == Checker::USER_BANNED)
 	{
-		$ret = array('banned' => 'login');
+		$ret = array('banned' => 'login', 'blocked' => '0');
 		echo json_encode($ret);
 	}
 	elseif($ret == Checker::IP_BANNED)
 	{
-		$ret = array('banned' => 'ip');
+		$ret = array('banned' => 'ip', 'blocked' => '0');
 		echo json_encode($ret);
 	}
 	else
@@ -23,7 +23,7 @@
 		{
 			if(time() - $_SESSION['blocked'] <= 60)
 			{
-				echo json_encode(array('blocked' => 'blocked'));
+				echo json_encode(array('blocked' => 'blocked', 'banned' => '0'));
 			}
 			else
 			{
@@ -66,7 +66,7 @@
 					$res = mysql_query($query);
 					$query = sprintf("INSERT INTO pr_ip_banned (ip, time) VALUES (INET_NTOA('%s'), '%d')", $_SERVER['REMOTE_ADDR'], time());
 					$res = mysql_query($query);
-					$ret = array('banned' => 'login');
+					$ret = array('banned' => 'login', 'blocked' => '0');
 					echo json_encode($ret);
 				}
 				else
@@ -98,7 +98,7 @@
 					if($blocked)
 					{
 						$_SESSION['blocked'] = time();
-						echo json_encode(array('blocked' => 'blocked'));
+						echo json_encode(array('blocked' => 'blocked', 'banned' => '0'));
 					}
 					else
 					{
@@ -107,6 +107,8 @@
 						$result = array();
 						foreach($ch->badCodes as $k => $bc) 
 							$result['elem'.$k] = $bc;
+						$result['banned'] = '0';
+						$result['blocked'] = '0';
 						echo json_encode($result);
 					}
 				}
@@ -119,12 +121,18 @@
 						$result = array();
 						foreach($ch->badCodes as $k => $bc) 
 							$result['elem'.$k] = $bc;
+						$result['banned'] = '0';
+						$result['blocked'] = '0';
 						echo json_encode($result);
 				}
 				else
 				{
 					if(count($ch->parsedCodes) == 0)
-						echo json_encode(array('elem0' => $_POST['codes']));
+						echo json_encode(array('elem0' => $_POST['codes'], 'banned' => '0', 'blocked' => '0'));
+					else
+					{
+						echo json_encode(array('ok' => '1','banned' => '0', 'blocked' => '0'));
+					}
 				}
 			}
 		}

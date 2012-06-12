@@ -55,7 +55,7 @@
 		unlink($tmp_name);
 		
         echo $result;
-       
-     
+		
+		
     }
 ?>
