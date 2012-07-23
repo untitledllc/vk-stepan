@@ -257,7 +257,7 @@ function _getProfile(data) {
 				if(count==5) {
 					document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке,<br>в знак дружбы с легендарным пиво.</p>';
 					document.getElementById('content').style.display='none';
-					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3"></a>';
+					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"></a>';
 					VK.api('photos.getProfileUploadServer', function(data) {
 					document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
 					if(data.response.upload_url) {
@@ -303,7 +303,7 @@ function _getProfile(data) {
 							if(count==5) {
 								document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке,<br>в знак дружбы с легендарным пиво.</p>';
 								document.getElementById('content').style.display='none';
-								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3"></a>';
+								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"></a>';
 							} else {
 								console.log('осталось: ' + (5-count));
 							}
@@ -346,7 +346,7 @@ VK.init(function() {
 			if(count==5) {
 				document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
 				document.getElementById('content').style.display='none';
-				document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3">';
+				document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1">';
 				$(".logo").each(function(indx, element) {
 					$(element).click(function(event){
 						$('*').addClass('wait');
@@ -395,7 +395,7 @@ VK.init(function() {
 							if(count==5) {
 								document.getElementById('top').innerHTML='<h1>Вы стали другом Степана Разина!</h1><p>Теперь вам доступен уникальный контент <a href="http://vk.com/page-25560758_43897020" target="_blank">в группе бренда ВКонтакте</a>. Выберите символ, который будет добавлен к вашей аватарке, в знак дружбы с легендарным пиво.</p>';
 								document.getElementById('content').style.display = 'none';
-								document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1"><img src="logo2.png" class="logo" id="logo2"><img src="logo3.png" class="logo" id="logo3">';
+								document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1">';
 								$(".logo").each(function(indx, element) {
 									$(element).click(function(event){
 										$('*').addClass('wait');
