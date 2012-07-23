@@ -8,7 +8,7 @@
 <? if(isset($_GET['vk'])) { ?>
 	<script src="http://vk.com/js/api/xd_connection.js?2"></script>
 <? } else { ?>
-	<script src="http://vk.com/js/api/openapi.js"></script>
+	<script src="http://vk.com/js/api/openapi.js?3" type="text/javascript"></script>
 <? } ?>
 <style>
 body {
@@ -213,7 +213,7 @@ var count=0, pic = new Image();
 pic.src='./img/load.gif'; // предзагрузка загрузки
 <? if(!isset($_GET['vk'])) { /* если с сайта */ ?>
 VK.init({
-  apiId: 2988039
+  apiId: 3047603
 });
 $('#login').click(function(event){
 	event.preventDefault();
@@ -247,9 +247,9 @@ function _getProfile(data) {
 			$.getJSON('login.php', {login:i.uid}, function(data){
 				if(data.banned!=0) {
 					if(data.banned=='ip') {
-						document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
+						document.getElementById('content').innerHTML=i.first_name+', Ваш IP адрес заблокирован на сутки, так как Вы слишком часто вводили неправильные коды!';
 					} else if(data.banned=='login') {
-						document.getElementById('content').innerHTML=i.first_name+', ты забанен!';
+						document.getElementById('content').innerHTML=i.first_name+', Ваша учетная запись заблокирована за попытку перебора кодов!';
 					}
 				}
 				count=data.codeCount;
@@ -290,9 +290,9 @@ function _getProfile(data) {
 					$.post('add_code.php', {login: i.uid, codes: v}, function(data1){
 						if(data1.banned!=0) {
 							if(data1.banned=='ip') {
-								document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
+								document.getElementById('content').innerHTML=i.first_name+', Ваш IP адрес заблокирован на сутки, так как Вы слишком часто вводили неправильные коды!';
 							} else if(data1.banned=='login') {
-								document.getElementById('content').innerHTML=i.first_name+', ты забанен!';
+								document.getElementById('content').innerHTML=i.first_name+', Ваша учетная запись заблокирована за попытку перебора кодов!';
 							}
 						} else if(data1.blocked!=0) {
 							document.getElementById('content').innerHTML=i.first_name+', Вы слишком часто вводите коды! Попробуйте снова через пару минут.';
@@ -324,7 +324,7 @@ function _getProfile(data) {
 	}
 }
 
-VK.Auth.getLoginStatus(authInfo);
+VK.Auth.getLoginStatus(authInfo, true);
 <? } else { /* если из приложения */ ?>
 VK.init(function() {
 
@@ -336,11 +336,14 @@ VK.init(function() {
 		$.getJSON('login.php', {login:i.uid}, function(data) {
 			if(data.banned!=0) {
 				if(data.banned=='ip') {
-					document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
+					document.getElementById('content').innerHTML=i.first_name+', Ваш IP адрес заблокирован на сутки, так как Вы слишком часто вводили неправильные коды!';
 				} else if(data.banned=='login') {
-					document.getElementById('content').innerHTML=i.first_name+', ты забанен!';
+					document.getElementById('content').innerHTML=i.first_name+', Ваша учетная запись заблокирована за попытку перебора кодов!';
 				}
+			} else if(data.blocked!=0) {
+				document.getElementById('content').innerHTML=i.first_name+', Вы слишком часто вводите коды! Попробуйте снова через пару минут.';
 			}
+
 			count=data.codeCount;
 			console.log('user: '+i.uid+', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 			if(count==5) {
@@ -382,9 +385,9 @@ VK.init(function() {
 					$.post('add_code.php', {login: i.uid, codes: v}, function(data1){
 						if(data1.banned!=0){
 							if(data1.banned=='ip') {
-								document.getElementById('content').innerHTML=i.first_name+', ты забанен по ip на сутки, я тебя по этому ip вычислю!';
+								document.getElementById('content').innerHTML=i.first_name+', Ваш IP адрес заблокирован на сутки, так как Вы слишком часто вводили неправильные коды!';
 							} else if(data1.banned=='login') {
-								document.getElementById('content').innerHTML=i.first_name+', ты забанен!';
+								document.getElementById('content').innerHTML=i.first_name+', Ваша учетная запись заблокирована за попытку перебора кодов!';
 							}
 						} else if(data1.blocked!=0) {
 							document.getElementById('content').innerHTML=i.first_name+', Вы слишком часто вводите коды! Попробуйте снова через пару минут.';
