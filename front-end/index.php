@@ -1,8 +1,7 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="ru">
 <head>
-	<meta charset="utf-8">
+	<meta charset="windows-1251">
 	<title>index</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <? if(isset($_GET['vk'])) { ?>
@@ -10,6 +9,8 @@
 <? } else { ?>
 	<script src="http://vk.com/js/api/openapi.js?3" type="text/javascript"></script>
 <? } ?>
+
+
 <style>
 body {
 	padding-top: 20px;
@@ -134,7 +135,7 @@ input[disabled], .disabled {
 }
 .wait {
 	cursor: progress;
-}
+} 
 <? if(!isset($_GET['vk'])) { ?>
 #login, #logout {
 	margin: 8px auto 0;
@@ -208,6 +209,7 @@ input[disabled], .disabled {
 	</div>
 	<marquee></marquee>
 </div>
+
 <script>
 var count=0, pic = new Image();
 pic.src='./img/load.gif'; // предзагрузка загрузки
@@ -225,15 +227,16 @@ $('#logout').click(function(event){
 });
 function authInfo(response) {
   if (response.session) {
-	console.log('user login');
+	//console.log('user login');
 	document.getElementById('login').style.display = 'none';
 	document.getElementById('logout').style.display = 'block';
   } else {
-	console.log('user logout');
+	//console.log('user logout');
 	document.getElementById('login').style.display = 'block';
 	document.getElementById('logout').style.display = 'none';
 	document.getElementById('content').style.display = 'none';
 	document.getElementById('top').innerHTML='Ещё больше увлекательных конкурсов и ценных призов <br>для друзей "Степана" в группе <a href="http://vk.com/stepanlegenda" target="_blank">ВКонтакте</a>.<br><b>Для участия войдите с помощью своего аккаунта ВКонтакте.</b>';
+  	document.getElementById('logo').style.display = 'none';
   }
 }
 VK.Observer.subscribe('auth.login', function(response) {
@@ -253,11 +256,12 @@ function _getProfile(data) {
 					}
 				}
 				count=data.codeCount;
-				console.log('user: ' + i.uid + ', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
+				//console.log('user: ' + i.uid + ', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 				if(count==5) {
 					document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
 					document.getElementById('content').style.display='none';
-					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"></a>';
+					document.getElementById('logo').style.display = 'block';
+					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo1.png" class="logo" id="logo1"></a>';
 					VK.api('photos.getProfileUploadServer', function(data) {
 					document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
 					if(data.response.upload_url) {
@@ -269,7 +273,7 @@ function _getProfile(data) {
 					}
 				});
 				} else {
-					console.log('осталось: ' + (5-count));
+					//console.log('осталось: ' + (5-count));
 					document.getElementById('content').style.display = 'block';
 					document.getElementById('top').innerHTML='Введи пять кодов из под крышек продукта с промо этикеткой и получи доступ к уникальному контенту в группе "Легенда 1795"';
 				}
@@ -303,9 +307,10 @@ function _getProfile(data) {
 							if(count==5) {
 								document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
 								document.getElementById('content').style.display='none';
-								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976"><img src="logo1.png" class="logo" id="logo1"></a>';
+								document.getElementById('logo').style.display = 'block';
+								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo1.png" class="logo" id="logo1"></a>';
 							} else {
-								console.log('осталось: ' + (5-count));
+								//console.log('осталось: ' + (5-count));
 							}
 						} else {
 							$(element).prev().removeClass('load ok').addClass('remove');
@@ -326,6 +331,9 @@ function _getProfile(data) {
 
 VK.Auth.getLoginStatus(authInfo, true);
 <? } else { /* если из приложения */ ?>
+
+
+		
 VK.init(function() {
 
 	VK.loadParams(document.location.href);
@@ -345,7 +353,7 @@ VK.init(function() {
 			}
 
 			count=data.codeCount;
-			console.log('user: '+i.uid+', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
+			//console.log('user: '+i.uid+', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 			if(count==5) {
 				document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
 				document.getElementById('content').style.display='none';
@@ -364,7 +372,7 @@ VK.init(function() {
 					});
 				});
 			} else {
-				console.log('осталось: ' + (5-count));
+				//console.log('осталось: ' + (5-count));
 				document.getElementById('content').style.display = 'block';
 				document.getElementById('top').innerHTML='Введи пять кодов из под крышек продукта с промо этикеткой и получи доступ к уникальному контенту в группе "Легенда 1795"!';
 			}
@@ -413,7 +421,7 @@ VK.init(function() {
 									});
 								});
 							} else {
-								console.log('осталось: ' + (5-count));
+							//	console.log('осталось: ' + (5-count));
 							}
 						} else {
 							$(element).prev().removeClass('load ok').addClass('remove');
