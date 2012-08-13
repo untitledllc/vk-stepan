@@ -17,6 +17,7 @@
 				$ret['code'.$i] = $reg_user->currentCodes['code'.$i];
 			$ret['banned'] = '0';
 			$ret['blocked'] = '0';
+			$ret['status'] = $reg_user->get_status();
 			echo json_encode($ret);
 		}
 		elseif($rg == reg::USER_BANNED)

@@ -261,7 +261,8 @@ function _getProfile(data) {
 					document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
 					document.getElementById('content').style.display='none';
 					document.getElementById('logo').style.display = 'block';
-					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo1.png" class="logo" id="logo1"></a>';
+					var stat = data.status;
+					document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo'+stat+'.png" class="logo" id="logo1"></a>';
 					VK.api('photos.getProfileUploadServer', function(data) {
 					document.getElementById('getProfileUploadServer').innerHTML=data.response.upload_url;
 					if(data.response.upload_url) {
@@ -305,10 +306,14 @@ function _getProfile(data) {
 							$(element).prev().removeClass('load remove').addClass('ok');
 							count++;
 							if(count==5) {
+								var stat;
+								$.getJSON('login.php', {login:i.uid}, function(d){
+									stat = d.status;
+								});
 								document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
 								document.getElementById('content').style.display='none';
 								document.getElementById('logo').style.display = 'block';
-								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo1.png" class="logo" id="logo1"></a>';
+								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo'+stat+'.png" class="logo" id="logo1"></a>';
 							} else {
 								//console.log('осталось: ' + (5-count));
 							}
@@ -355,15 +360,16 @@ VK.init(function() {
 			count=data.codeCount;
 			//console.log('user: '+i.uid+', user: ' + i.first_name + ' ' + i.last_name+', link: http://vk.com/' + i.screen_name+', photo: ' + i.photo_big+', кодов введено: ' + count);
 			if(count==5) {
+				var stat = data.status;
 				document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
 				document.getElementById('content').style.display='none';
-				document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1">';
+				document.getElementById('logo').innerHTML='<img src="logo'+stat+'.png" class="logo" id="logo1">';
 				$(".logo").each(function(indx, element) {
 					$(element).click(function(event){
 						$('*').addClass('wait');
 						VK.api('photos.getProfileUploadServer', function(data) {
 							if(data.response.upload_url) {
-								$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: indx}, function(json){
+								$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: stat}, function(json){
 									VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash});
 									$('*').removeClass('wait');
 								}, 'json');
@@ -404,22 +410,27 @@ VK.init(function() {
 							$(element).prev().removeClass('load remove').addClass('ok');
 							count++;
 							if(count==5) {
-								document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
-								document.getElementById('content').style.display = 'none';
-								document.getElementById('logo').innerHTML='<img src="logo1.png" class="logo" id="logo1">';
-								$(".logo").each(function(indx, element) {
-									$(element).click(function(event){
-										$('*').addClass('wait');
-										VK.api('photos.getProfileUploadServer', function(data) {
-											if(data.response.upload_url) {
-												$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: indx}, function(json){
-													VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash});
-													$('*').removeClass('wait');
-												}, 'json');
-											}
+								var stat = 1;
+								$.getJSON('login.php', {login:i.uid}, function(d){
+									stat = d.status;
+									document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
+									document.getElementById('content').style.display = 'none';
+									document.getElementById('logo').innerHTML='<img src="logo'+stat+'.png" class="logo" id="logo1">';
+									$(".logo").each(function(indx, element) {
+										$(element).click(function(event){
+											$('*').addClass('wait');
+											VK.api('photos.getProfileUploadServer', function(data) {
+												if(data.response.upload_url) {
+													$.post("vkSender.php", {upload_url: data.response.upload_url, login: i.uid, ava: i.photo_big, logo: stat}, function(json){
+														VK.api('photos.saveProfilePhoto', {server: json.server, photo: json.photo, hash: json.hash});
+														$('*').removeClass('wait');
+													}, 'json');
+												}
+											});
 										});
 									});
 								});
+								
 							} else {
 							//	console.log('осталось: ' + (5-count));
 							}

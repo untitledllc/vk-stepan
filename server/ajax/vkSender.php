@@ -9,9 +9,9 @@
 		{
 			if($i == $_POST['logo'])
 			{
-				$i++;
 				$logoFName = 'logo'.$i.'.png';
 				$logo = ImageCreateFromPNG($logoFName);
+				$i++;
 				break;
 			}
 		}

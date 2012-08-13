@@ -73,6 +73,37 @@
 			else
 				return -1;
 		}
+		function set_status($st)
+		{
+			//Проверим, есть ли пользователь в базе  "statuses"
+			$query = sprintf("SELECT * FROM pr_statuses WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+			$res = mysql_query($query);
+			$st = intval($st);
+			if($st < 1 || $st > 3)
+				return -1;
+			if(mysql_num_rows($res) > 0)
+			{		
+				$query = sprintf("UPDATE pr_statuses SET  status = %d WHERE vk_id = '%s'", $st, mysql_real_escape_string($this->vkId));
+				$res = mysql_query($query);
+			}
+			else
+			{
+				$query = sprintf("INSERT INTO pr_statuses (vk_id, status) VALUES ('%s', %d)", mysql_real_escape_string($this->vkId), $st);
+				$res = mysql_query($query);
+			}
+		}
+		function get_status()
+		{
+			$query = sprintf("SELECT status FROM pr_statuses WHERE vk_id = '%s'", mysql_real_escape_string($this->vkId));
+			$res = mysql_query($query);
+			if(mysql_num_rows($res) > 0)
+			{
+				$res = mysql_fetch_assoc($res);
+				return intval($res['status']);
+			}
+			else
+				return 1;	//По умолчанию все юнги
+		}
 		protected $vkId;
 		public $codeCount;
 		public $currentCodes;
