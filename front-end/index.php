@@ -309,11 +309,12 @@ function _getProfile(data) {
 								var stat;
 								$.getJSON('login.php', {login:i.uid}, function(d){
 									stat = d.status;
+									document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
+									document.getElementById('content').style.display='none';
+									document.getElementById('logo').style.display = 'block';
+									document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo'+stat+'.png" class="logo" id="logo1"></a>';
 								});
-								document.getElementById('top').innerHTML='<h1>Вы стали членом команды Легендарного плавучего бара.</h1><p>Примите участие в <a href="http://vk.com/pages?oid=-25560758&p=%D0%94%D0%BE%D0%BB%D0%B3%D0%BE%D0%B6%D0%B4%D0%B0%D0%BD%D0%BD%D0%BE%D0%B5%20%D0%B2%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9F%D0%BB%D0%B0%D0%B2%D0%B1%D0%B0%D1%80%D0%B0" target="_blank">конкурсе</a> чтобы получить свои два билета на главное путешествие лета!</p>';
-								document.getElementById('content').style.display='none';
-								document.getElementById('logo').style.display = 'block';
-								document.getElementById('logo').innerHTML='<a href="http://vk.com/app2988039_48847976" target="_top"><img src="logo'+stat+'.png" class="logo" id="logo1"></a>';
+								
 							} else {
 								//console.log('осталось: ' + (5-count));
 							}

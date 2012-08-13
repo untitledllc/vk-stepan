@@ -3,23 +3,30 @@
 	{
 		require_once '../db_conf.php';
 		require_once '../register.php';
-		//Получаем uid по ссылке, с помощью парсинга страницы пользователя по регулярке
-
-		//Получаем страницу пользователя
-		$ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $_POST['vkLink']);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
-		
+		//Получаем uid по ссылке, либо помощью парсинга страницы пользователя по регулярке
+			
 		//Парсим
 		$matches = array();
-        preg_match('/http:\/\/cs[0-9]+.userapi.com\/u[0-9]+/', $result, $matches);
+		if (preg_match('/http:\/\/vk.com\/id[0-9]+/', $_POST['vkLink'], $matches) == 1)
+		{
+			$matches = array();
+			preg_match('/[0-9]+/', $_POST['vkLink'], $matches);
+		}
+		else
+		{
+			//Получаем страницу пользователя
+			$ch = curl_init();
+	        curl_setopt($ch, CURLOPT_URL, $_POST['vkLink']);
+	        curl_setopt($ch, CURLOPT_HEADER, false);
+	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	        $result = curl_exec($ch);
+	        curl_close($ch);
+			preg_match('/(<a)\s(id="profile_photo_link")\s(href="\/photo)[0-9]+(_)/', $result, $matches);
+		}
         $result = array();
-        preg_match('/u[0-9]+/', $matches[0], $result);
-        $result = substr($result[0], 1);	//uid
-        
+        preg_match('/[0-9]+/', $matches[0], $result);
+        $result = substr($result[0], 0);	//uid
+       
         // Регистрируем пользователя и ставим заданный статус
         $reg_user = new reg($result);
 		$rg = $reg_user->register();
